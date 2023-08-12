@@ -49,7 +49,7 @@ def set_seed(seed):
 
 
 # -----------------------------------------------------------------------------
-ins_list = ['VLMOP2', 'RE36']
+ins_list = ['RE36']
 
 # number of initialized solutions
 n_init = 20 

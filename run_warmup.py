@@ -49,12 +49,12 @@ def set_seed(seed):
 set_seed(4040)
 
 # -----------------------------------------------------------------------------
-ins_list = ['cybenko_shifted']
+ins_list = ['DTLZ2']
 
 # number of initialized solutions
 n_init = 20 
 # number of iterations, and batch size per iteration
-n_iter = 50
+n_iter = 40
 
 # PSL 
 # number of learning steps
@@ -91,8 +91,8 @@ start = time.time()
 hv_list = {}
 for test_ins in ins_list:
     
-    suffix = "_warmup"
-    suffix_dir = ""
+    suffix="_2_stage_0_controllable_new"
+    suffix_dir = "_ablation_beta"
     
     if not os.path.exists(f"logs_{test_ins}{suffix_dir}"):
         os.makedirs(f"logs_{test_ins}{suffix_dir}")
@@ -248,8 +248,6 @@ for test_ins in ins_list:
                 candidate_tch_grad +=  0.01 * np.sum(candidate_grad, axis = 1) 
                 
                 X_candidate_tch = X_candidate_tch - 0.01 * candidate_tch_grad
-                # X_candidate_tch[X_candidate_tch <= 0]  = 0
-                # X_candidate_tch[X_candidate_tch >= 1]  = 1  
                 for i in range (n_dim):
                     X_candidate_tch[:,i] = np.clip(X_candidate_tch[:, i], a_min=problem.lbound[i], a_max = problem.ubound[i])
 
@@ -314,12 +312,6 @@ for test_ins in ins_list:
 
         with open(f"logs_{test_ins}{suffix_dir}/hv_{test_ins}_{n_dim}{suffix}.pkl", 'wb') as output_file:
             pickle.dump([hv_list], output_file)
-        
-        # if (i_iter + 1) % 5 == 0:    
-        #     torch.save(psmodel, f"logs_{test_ins}{suffix_dir}/{test_ins}_{n_dim}_{i_iter + 1}{suffix}.pt")
-
-        #     with open(f'logs_{test_ins}{suffix_dir}/surrogate_model_{test_ins}_{n_dim}_{i_iter + 1}{suffix}.pkl', 'wb') as output_file:
-        #         cloudpickle.dump([surrogate_model], output_file)
         np.save(f"logs_{test_ins}{suffix_dir}/evaluation_{test_ins}_X_{n_dim}{suffix}", X)
         np.save(f"logs_{test_ins}{suffix_dir}/evaluation_{test_ins}_Y_{n_dim}{suffix}", Y)
         

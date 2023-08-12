@@ -1,6 +1,3 @@
-"""
-Runing the proposed Paret Set Learning (PSL) method on 15 test problems.
-"""
 import argparse
 import numpy as np
 import torch
@@ -46,8 +43,6 @@ def set_seed(seed):
     torch.backends.cudnn.enabled = True
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
-
-
 
 # -----------------------------------------------------------------------------
 ins_list = ['DTLZ2']
@@ -172,8 +167,8 @@ for evaluation in range(30, 221, 10):
                         noise = torch.empty(params.shape).to(device)
                         if noise.dim() > 1:
                             nn.init.xavier_uniform_(noise).to(device)
-                            # nn.init.xavier_normal_(noise).to(device)
-                            params.mul_(beta).add_(noise, alpha = 1-beta)
+                            # \theta_i = beta*theta_{i-1} + (1-beta)* Noise
+                            params.mul_(beta).add_(noise, alpha = 1 - beta)
             if ((i_iter + 1) %10) == 0:
                 beta *= 0.1
             
@@ -338,7 +333,7 @@ for evaluation in range(30, 221, 10):
             
             np.save(f"logs_{test_ins}{suffix_dir}/evaluation_{test_ins}_X_{n_dim}{suffix}", X)
             np.save(f"logs_{test_ins}{suffix_dir}/evaluation_{test_ins}_Y_{n_dim}{suffix}", Y)
+            
             np.save(f"logs_{test_ins}{suffix_dir}/front_{test_ins}_{n_dim}{suffix}", front_list)
             np.save(f"logs_{test_ins}{suffix_dir}/x_{test_ins}_{n_dim}{suffix}", x_list)
             np.save(f"logs_{test_ins}{suffix_dir}/y_{test_ins}_{n_dim}{suffix}", y_list)
-            

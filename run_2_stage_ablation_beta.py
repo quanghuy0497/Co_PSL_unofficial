@@ -44,15 +44,13 @@ def set_seed(seed):
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
 
-set_seed(4040)
-
 # -----------------------------------------------------------------------------
 ins_list = ['DTLZ2']
 
 # number of initialized solutions
 n_init = 20 
 # number of iterations, and batch size per iteration
-n_iter = 50
+n_iter = 40
 
 # PSL 
 # number of learning steps
@@ -79,15 +77,17 @@ args = parser.parse_args()
 # the dimension of optimized variables
 n_dim = args.n_dim
 
-start = time.time()
 
 # -----------------------------------------------------------------------------
 
 hv_list = {}
-for b in range(10):
+for b in range(10):  
+    
+    start = time.time()
+    set_seed(4040)
     for test_ins in ins_list:
-        beta = (b + 1) * 0.1
-        suffix="2_stage" + "_" + str(beta) + "_controllable"
+        beta = int(b+1) / 10
+        suffix="_2_stage" + "_" + str(b+1) + "_controllable"
         suffix_dir = "_ablation_beta"
         
         if not os.path.exists(f"logs_{test_ins}{suffix_dir}"):
@@ -118,7 +118,7 @@ for b in range(10):
         pref_vec_test = sampling_vector_evenly(n_obj, n_test)
         
         print(f"Problem: {test_ins}\nN dim: {n_dim} \nN objective: {n_obj} \nLogs dir: logs_{test_ins}{suffix_dir}/\nRun: {suffix}")
-        print(f"Number of warm-up evaluation: {evaluation}\nNumber of evaluation per iteration: {n_sample}\nBeta: {beta}")
+        print(f"Beta: {beta}")
         
         front_list, x_list, y_list = {}, {}, {}
 
@@ -135,7 +135,7 @@ for b in range(10):
         # currently, the Pareto Set Model is on torch, and the Gaussian Process Model is on np 
         
         # initialize n_init solutions 
-        x_init = np.load(f"logs_warmup/DGEMO_{test_ins}_X_{n_dim}_{evaluation}.npy")
+        x_init = np.load(f"logs_warmup/DGEMO_{test_ins}_X_{n_dim}_220.npy")
         
         y_init = problem.evaluate(torch.from_numpy(x_init).to(device))
         
@@ -151,20 +151,18 @@ for b in range(10):
         
         # n_iter batch selections 
         for i_iter in range(n_iter):
-            print(f"Iteration:  {i_iter + 1 :03d}/{n_iter}  ||  Time: {(time.time() - start)/60:.2f} min")
-            
-            # $$\theta_i = (1-beta) * \theta_{i-1} + beta * Noise 
-            # beta starts by 0.5 and reduce by 10^-1 for every 10 iterations
+            print(f"Iteration:  {i_iter + 1 :02d}/{n_iter}  ||  Time: {(time.time() - start)/60:.2f} min")
+            print(f"   Current beta: {beta}")
             if i_iter > 0:
                 with torch.no_grad():
                     for params in psmodel.parameters():
                         noise = torch.empty(params.shape).to(device)
                         if noise.dim() > 1:
-                            # nn.init.xavier_uniform_(noise).to(device)
-                            nn.init.xavier_normal_(noise).to(device)
-                            params.mul_(beta).add_(noise, alpha = 1-beta)
+                            nn.init.xavier_uniform_(noise).to(device)
+                            # \theta_i = beta*theta_{i-1} + (1-beta)* Noise
+                            params.mul_(beta).add_(noise, alpha = 1 - beta)
             if ((i_iter + 1) %10) == 0:
-                beta *= 0.1
+                beta /= 10
             
             # optimizer
             optimizer = torch.optim.Adam(psmodel.parameters(), lr=1e-3)
@@ -325,11 +323,6 @@ for b in range(10):
             with open(f"logs_{test_ins}{suffix_dir}/hv_{test_ins}_{n_dim}{suffix}.pkl", 'wb') as output_file:
                 pickle.dump([hv_list], output_file)
             
-            # if (i_iter + 1) % 5 == 0:    
-            #     torch.save(psmodel, f"logs_{test_ins}{suffix_dir}/{test_ins}_{n_dim}_{i_iter + 1}{suffix}.pt")
-
-            #     with open(f'logs_{test_ins}{suffix_dir}/surrogate_model_{test_ins}_{n_dim}_{i_iter + 1}{suffix}.pkl', 'wb') as output_file:
-            #         cloudpickle.dump([surrogate_model], output_file)
             np.save(f"logs_{test_ins}{suffix_dir}/evaluation_{test_ins}_X_{n_dim}{suffix}", X)
             np.save(f"logs_{test_ins}{suffix_dir}/evaluation_{test_ins}_Y_{n_dim}{suffix}", Y)
             
