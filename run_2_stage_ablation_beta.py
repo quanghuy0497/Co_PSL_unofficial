@@ -135,7 +135,7 @@ for b in range(10):
         # currently, the Pareto Set Model is on torch, and the Gaussian Process Model is on np 
         
         # initialize n_init solutions 
-        x_init = np.load(f"logs_warmup/DGEMO_{test_ins}_X_{n_dim}_220.npy")
+        x_init = np.load(f"warmup_evaluation/DGEMO_{test_ins}_X_{n_dim}_220.npy")
         
         y_init = problem.evaluate(torch.from_numpy(x_init).to(device))
         
