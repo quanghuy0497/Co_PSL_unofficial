@@ -50,12 +50,13 @@ def set_seed(seed):
 
 
 # -----------------------------------------------------------------------------
-ins_list = ['VLMOP2']
+ins_list = ['DTLZ2']
 
 # number of initialized solutions
 n_init = 20 
 # number of iterations, and batch size per iteration
-n_iter = 50
+n_iter = 20
+n_sample = 10
 
 # PSL 
 # number of learning steps
@@ -95,8 +96,6 @@ for test_ins in ins_list:
     
     if not os.path.exists(f"logs_{test_ins}{suffix_dir}"):
         os.makedirs(f"logs_{test_ins}{suffix_dir}")
-        
-    n_sample = 5
         
     # get problem info
     hv_all_value = np.zeros([n_iter])
@@ -151,7 +150,7 @@ for test_ins in ins_list:
     
     psmodel = ParetoSetModel(n_dim, n_obj, bound)
     psmodel.to(device)
-    beta = 0.5
+    beta = 0.2
             
     
     # n_iter batch selections 
@@ -168,7 +167,7 @@ for test_ins in ins_list:
                         nn.init.xavier_uniform_(noise).to(device)
                         # nn.init.xavier_normal_(noise).to(device)
                         params.mul_(beta).add_(noise, alpha = 1-beta)
-        if ((i_iter + 1) %10) == 0:
+        if ((i_iter + 1) %5) == 0:
             beta *= 0.1
         
         # optimizer

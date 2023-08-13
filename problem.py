@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-device = 'cuda:2'
+device = 'cuda:1'
 
 def get_problem(name, *args, **kwargs):
     name = name.lower()
@@ -294,7 +294,7 @@ class VLMOP2():
         self.nadir_point = [1, 1]
         self.lbound = torch.tensor([-1]*n_dim).float()
         self.ubound = torch.tensor([1]*n_dim).float()
-        self.bound = 4
+        self.bound = 2
        
     def evaluate(self, x): 
         n = x.shape[1]

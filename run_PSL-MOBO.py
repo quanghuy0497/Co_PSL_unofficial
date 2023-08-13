@@ -49,12 +49,24 @@ def set_seed(seed):
 
 
 # -----------------------------------------------------------------------------
-ins_list = ['RE36']
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--n_dim", type=int, default=15)
+args = parser.parse_args()
+
+# the dimension of optimized variables
+n_dim = args.n_dim
+
+if n_dim == 4:
+    ins_list = ['RE36', 'VLMOP2', 'RE33', 'RE37'] 
+else:
+    ins_list = ['F2', 'DTLZ2']
 
 # number of initialized solutions
 n_init = 20 
 # number of iterations, and batch size per iteration
-n_iter = 90
+n_iter = 40
 
 # PSL 
 # number of learning steps
@@ -72,27 +84,21 @@ n_candidate = n_region * n_candidate_per_region
 n_local = 1
 
 # device
-device = 'cuda:2' # 'cuda:1'
+device = 'cuda:1' # 'cuda:1'
 
 # number of expensive evaluations per iteration
-n_sample = 5 
+n_sample = 10 
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--n_dim", type=int, default=15)
-args = parser.parse_args()
-
-# the dimension of optimized variables
-n_dim = args.n_dim
-
-start = time.time()
 
 # -----------------------------------------------------------------------------
 
 hv_list = {}
 for test_ins in ins_list:
-    set_seed(44)
+    set_seed(440)
+
+    start = time.time()
     
-    suffix="_PSL-MOBO"
+    suffix="_PSL-MOBO_new"
     suffix_dir = "_final"
     
     if not os.path.exists(f"logs_{test_ins}{suffix_dir}"):
