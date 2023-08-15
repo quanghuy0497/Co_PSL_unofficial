@@ -50,7 +50,7 @@ def set_seed(seed):
 
 
 # -----------------------------------------------------------------------------
-ins_list = ['DTLZ2']
+ins_list = ['RE36', 'VLMOP2', 'RE33', 'RE37', 'F2', 'DTLZ2']
 
 # number of initialized solutions
 n_init = 20 
@@ -91,8 +91,13 @@ hv_list = {}
 for test_ins in ins_list:
     set_seed(44)
     
+    if test_ins in ['F2', 'DTLZ2', 'VLMOP2']:
+        n_dim = 6
+    else:
+        n_dim = 4
+    
     suffix="_Co-PSL"
-    suffix_dir = "_final"
+    suffix_dir = ""
     
     if not os.path.exists(f"logs_{test_ins}{suffix_dir}"):
         os.makedirs(f"logs_{test_ins}{suffix_dir}")

@@ -50,9 +50,9 @@ def set_seed(seed):
 
 # -----------------------------------------------------------------------------
 
-seed_list = [44, 56, 501]
+seed_list = [22, 67, 89, 164, 6430, 341, 64, 97]
 
-ins_list = ['RE36', 'VLMOP2', 'RE33', 'RE37', 'F2', 'DTLZ2']
+ins_list = ['RE36']
 
 # number of initialized solutions
 n_init = 20 
@@ -94,7 +94,7 @@ for seed in seed_list:
         start = time.time()
         
         suffix=f"_PSL-MOBO_{seed}"
-        suffix_dir = "_final"
+        suffix_dir = "_final_2"
         
         if not os.path.exists(f"logs_{test_ins}{suffix_dir}"):
             os.makedirs(f"logs_{test_ins}{suffix_dir}")
