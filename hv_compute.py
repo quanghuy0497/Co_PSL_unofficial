@@ -9,10 +9,10 @@ Config.warnings['not_compiled'] = False
 from problem import get_problem
 
 
-
-methods = ['DGEMO', 'MOEAD-EGO', 'TS-TCH', 'TSEMO', 'USEMO-EI']
+methods = ['DGEMO', 'MOEAD-EGO', 'TS-TCH', 'TSEMO', 'USEMO-EI', 'PSL-MOBO', 'Co-PSL']
 
 problem_names = ['DTLZ2', 'VLMOP2', 'F2', 'RE33', 'RE36', 'RE37']
+
 
 for problem_name in problem_names:
     log_dir = f"weight/{problem_name}"
