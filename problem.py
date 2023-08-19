@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-device = 'cuda:1'
+device = 'cuda:2'
 
 def get_problem(name, *args, **kwargs):
     name = name.lower()
