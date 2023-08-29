@@ -51,12 +51,12 @@ def set_seed(seed):
 # -----------------------------------------------------------------------------
 
 
-ins_list = ['RE36', 'VLMOP2', 'RE33', 'RE37', 'F2', 'DTLZ2']
+ins_list = ['VLMOP2', 'F2', 'DTLZ2']
 
 # number of initialized solutions
 n_init = 20 
 # number of iterations, and batch size per iteration
-n_iter = 40
+n_iter = 20
 
 # PSL 
 # number of learning steps

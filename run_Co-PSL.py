@@ -50,7 +50,7 @@ def set_seed(seed):
 
 
 # -----------------------------------------------------------------------------
-ins_list = ['RE36', 'VLMOP2', 'RE33', 'RE37', 'F2', 'DTLZ2']
+ins_list = ['VLMOP2', 'F2', 'DTLZ2']
 
 # number of initialized solutions
 n_init = 20 
@@ -125,7 +125,7 @@ for test_ins in ins_list:
     pref_vec_test = sampling_vector_evenly(n_obj, n_test)
     
     print(f"Problem: {test_ins}\nN dim: {n_dim} \nN objective: {n_obj} \nLogs dir: logs_{test_ins}{suffix_dir}/\nRun: {suffix}")
-    print(f"Number of warm-up evaluation: 220\nNumber of evaluation per iteration: 5")
+    print(f"Number of warm-up evaluation: 220\nNumber of evaluation per iteration: {n_sample}")
     
     front_list, x_list, y_list = {}, {}, {}
 
@@ -142,8 +142,8 @@ for test_ins in ins_list:
     # currently, the Pareto Set Model is on torch, and the Gaussian Process Model is on np 
     
     # initialize n_init solutions 
-    x_init = np.load(f"warmup_evaluation/DGEMO_{test_ins}_X_{n_dim}_220.npy")
-    y_init = np.load(f"warmup_evaluation/DGEMO_{test_ins}_Y_{n_dim}_220.npy")
+    x_init = np.load(f"warmup_evaluation_multi/DGEMO_{test_ins}_X_{n_dim}_220_44.npy")
+    y_init = np.load(f"warmup_evaluation_multi/DGEMO_{test_ins}_Y_{n_dim}_220_44.npy")
     
     # y_init = problem.evaluate(torch.from_numpy(x_init).to(device))
     
