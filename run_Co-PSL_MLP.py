@@ -26,7 +26,7 @@ from pymoo.util.nds.non_dominated_sorting import NonDominatedSorting
 from mobo.surrogate_model import GaussianProcess
 from mobo.transformation import StandardTransform
 
-from model import ParetoSetModel
+from model import ParetoSetModel_MLP as ParetoSetModel
 
 import random
 
@@ -50,7 +50,7 @@ def set_seed(seed):
 
 
 # -----------------------------------------------------------------------------
-ins_list = ['DTLZ2']
+ins_list = ['DTLZ2', 'F2', 'VLMOP2']
 
 
 # number of initialized solutions
@@ -75,7 +75,7 @@ n_candidate = n_region * n_candidate_per_region
 n_local = 1
 
 # device
-device = 'cuda:2'
+device = 'cuda:1'
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--n_dim", type=int, default=15)
@@ -91,16 +91,16 @@ hv_list = {}
 for test_ins in ins_list:
     set_seed(44)
     
-    if test_ins in ['F2', 'DTLZ2', 'VLMOP2']:
+    if test_ins in ['F2', 'DTLZ2']:
         n_dim = 6
     else:
         n_dim = 4
     
-    suffix=f"_Co-PSL_EHVI_220_40_5"
+    suffix=f"_Co-PSL_MLP"
     suffix_dir = ""
     
-    if not os.path.exists(f"logs_{test_ins}{suffix_dir}"):
-        os.makedirs(f"logs_{test_ins}{suffix_dir}")
+    if not os.path.exists(f"logs_model"):
+        os.makedirs(f"logs_model")
         
     # get problem info
     hv_all_value = np.zeros([n_iter])
@@ -142,8 +142,8 @@ for test_ins in ins_list:
     # currently, the Pareto Set Model is on torch, and the Gaussian Process Model is on np 
     
     # initialize n_init solutions 
-    x_init = np.load(f"warmup_evaluation/EHVI_{test_ins}_X_{n_dim}_220_5.npy")
-    y_init = np.load(f"warmup_evaluation/EHVI_{test_ins}_Y_{n_dim}_220_5.npy")
+    x_init = np.load(f"warmup_evaluation/DGEMO_{test_ins}_X_{n_dim}_220.npy")
+    y_init = np.load(f"warmup_evaluation/DGEMO_{test_ins}_Y_{n_dim}_220.npy")
     
     # y_init = problem.evaluate(torch.from_numpy(x_init).to(device))
     
@@ -328,12 +328,12 @@ for test_ins in ins_list:
     
         print("***********************************************")
 
-        with open(f"logs_{test_ins}{suffix_dir}/hv_{test_ins}_{n_dim}{suffix}.pkl", 'wb') as output_file:
+        with open(f"logs_model/hv_{test_ins}_{n_dim}{suffix}.pkl", 'wb') as output_file:
             pickle.dump([hv_list], output_file)
         
-        np.save(f"logs_{test_ins}{suffix_dir}/evaluation_{test_ins}_X_{n_dim}{suffix}", X)
-        np.save(f"logs_{test_ins}{suffix_dir}/evaluation_{test_ins}_Y_{n_dim}{suffix}", Y)
+        np.save(f"logs_model/evaluation_{test_ins}_X_{n_dim}{suffix}", X)
+        np.save(f"logs_model/evaluation_{test_ins}_Y_{n_dim}{suffix}", Y)
         
-        np.save(f"logs_{test_ins}{suffix_dir}/front_{test_ins}_{n_dim}{suffix}", front_list)
-        np.save(f"logs_{test_ins}{suffix_dir}/x_{test_ins}_{n_dim}{suffix}", x_list)
-        np.save(f"logs_{test_ins}{suffix_dir}/y_{test_ins}_{n_dim}{suffix}", y_list)
+        np.save(f"logs_model/front_{test_ins}_{n_dim}{suffix}", front_list)
+        np.save(f"logs_model/x_{test_ins}_{n_dim}{suffix}", x_list)
+        np.save(f"logs_model/y_{test_ins}_{n_dim}{suffix}", y_list)
