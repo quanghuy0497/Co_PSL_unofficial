@@ -1,0 +1,40 @@
+Reading the dataset
+Done
+Normalizing the dataset
+Done
+Generating queries
+Done
+Solving queries using linear scan
+Done
+Linear scan time: 0.007371874542004661 per query
+Centering the dataset and queries
+Done
+Constructing the LSH table
+Done
+Construction time: 1.3956391320098191
+Choosing number of probes
+50 -> 0.211
+100 -> 0.264
+200 -> 0.347
+400 -> 0.43
+800 -> 0.521
+1600 -> 0.626
+3200 -> 0.723
+6400 -> 0.825
+12800 -> 0.902
+9600 -> 0.874
+11200 -> 0.896
+12000 -> 0.898
+12400 -> 0.9
+12200 -> 0.9
+12100 -> 0.9
+12050 -> 0.898
+12075 -> 0.9
+12062 -> 0.899
+12068 -> 0.9
+12065 -> 0.9
+12063 -> 0.9
+Done
+12063 probes
+Query time: 0.00971740509000665
+Precision: 0.9
