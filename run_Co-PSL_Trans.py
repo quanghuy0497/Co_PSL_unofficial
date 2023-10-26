@@ -56,8 +56,8 @@ ins_list = ['DTLZ2', 'F2', 'VLMOP2']
 # number of initialized solutions
 n_init = 20 
 # number of iterations, and batch size per iteration
-n_iter = 40
-n_sample = 5
+n_iter = 20
+n_sample = 10
 
 # PSL 
 # number of learning steps
@@ -91,7 +91,7 @@ hv_list = {}
 for test_ins in ins_list:
     set_seed(44)
     
-    if test_ins in ['F2', 'DTLZ2']:
+    if test_ins in ['F2', 'DTLZ2', 'VLMOP2']:
         n_dim = 6
     else:
         n_dim = 4

@@ -2,33 +2,32 @@
 Runing the proposed Paret Set Learning (PSL) method on 15 test problems.
 """
 import argparse
+import os
+import pdb
+import pickle
+import time
+
+import cloudpickle
 import numpy as np
 import torch
 import torch.nn as nn
-import pickle
-import cloudpickle
-import os
-import time
-import pdb
-from problem import get_problem
-from partitioning import sampling_vector_randomly, sampling_vector_evenly
-
 from lhs import lhs
-
+from partitioning import sampling_vector_evenly, sampling_vector_randomly
+from problem import get_problem
+from pymoo.config import Config
 from pymoo.indicators.hv import HV
+
 # from pymoo.factory import get_performance_indicator as HV
 
-from pymoo.config import Config
 Config.warnings ['not_compiled'] = False
 
-from pymoo.util.nds.non_dominated_sorting import NonDominatedSorting
+import random
 
 from mobo.surrogate_model import GaussianProcess
 from mobo.transformation import StandardTransform
-
 from model import ParetoSetModel_MLP as ParetoSetModel
+from pymoo.util.nds.non_dominated_sorting import NonDominatedSorting
 
-import random
 
 def set_seed(seed):
     """for reproducibility
@@ -56,8 +55,8 @@ ins_list = ['DTLZ2', 'F2', 'VLMOP2']
 # number of initialized solutions
 n_init = 20 
 # number of iterations, and batch size per iteration
-n_iter = 40
-n_sample = 5
+n_iter = 20
+n_sample = 10
 
 # PSL 
 # number of learning steps
@@ -91,7 +90,7 @@ hv_list = {}
 for test_ins in ins_list:
     set_seed(44)
     
-    if test_ins in ['F2', 'DTLZ2']:
+    if test_ins in ['F2', 'DTLZ2', 'VLMOP2']:
         n_dim = 6
     else:
         n_dim = 4

@@ -40,14 +40,14 @@ class ParetoSetModel_Transformer(torch.nn.Module):
         x = self.ffn2(x)
         x = x + x_
         x = self.output_layer(x)
-        if self.last_activation == 'relu':
-            x = F.relu(x)
-        elif self.last_activation == 'sigmoid':
-            x = F.sigmoid(x)
-        elif self.last_activation == 'softmax':
-            x = F.softmax(x)    
-        else:
-            x = x
+        # if self.last_activation == 'relu':
+        #     x = F.relu(x)
+        # elif self.last_activation == 'sigmoid':
+        #     x = F.sigmoid(x)
+        # elif self.last_activation == 'softmax':
+        #     x = F.softmax(x)    
+        # else:
+        #     x = x
                 
         x = torch.mean(x, dim=0)
         

@@ -1,4 +1,6 @@
 __pycache__
 *.pt
-
-LSH/dataset/
+logs_model_Long/
+dataset/
+LSH
+lsh_problem.py
