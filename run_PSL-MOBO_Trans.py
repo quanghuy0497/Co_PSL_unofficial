@@ -76,7 +76,7 @@ n_candidate = n_region * n_candidate_per_region
 n_local = 1
 
 # device
-device = 'cuda:1' # 'cuda:1'
+device = 'cuda:0' # 'cuda:1'
 
 
 # -----------------------------------------------------------------------------
@@ -163,9 +163,11 @@ for test_ins in ins_list:
         optimizer = torch.optim.Adam(psmodel.parameters(), lr=1e-3)
         
         #  solution normalization
-        transformation = StandardTransform([0,1])
-        transformation.fit(X, Y)
-        X_norm, Y_norm = transformation.do(X, Y) 
+        #  solution normalization
+        # transformation = StandardTransform([0,1])
+        # transformation.fit(X, Y)
+        # X_norm, Y_norm = transformation.do(X, Y) 
+        X_norm, Y_norm = X, Y
         
         
         # train GP surrogate model 
