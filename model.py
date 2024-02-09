@@ -71,9 +71,9 @@ class ParetoSetModel_MLP(torch.nn.Module):
         self.fc3 = nn.Linear(256, self.n_dim)
         self.bound = bound
 
-        torch.nn.init.xavier_uniform(self.fc1.weight)
-        torch.nn.init.xavier_uniform(self.fc2.weight)
-        torch.nn.init.xavier_uniform(self.fc3.weight)
+        # torch.nn.init.xavier_uniform(self.fc1.weight)
+        # torch.nn.init.xavier_uniform(self.fc2.weight)
+        # torch.nn.init.xavier_uniform(self.fc3.weight)
         
     def forward(self, pref):
     

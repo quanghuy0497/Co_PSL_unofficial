@@ -45,10 +45,10 @@ class cybenko():
         self.nadir_point = [1, 1]
         self.lbound = torch.tensor([-1]*n_dim).float()
         self.ubound = torch.tensor([1]*n_dim).float()
-        self.bound = 2
+        self.bound = 5
        
     def evaluate(self, x): 
-        a = x 
+        a = x -2
         n = x.shape[1]
 
         f1 = 1 - torch.exp(-torch.sum((a - 1 / np.sqrt(n))**2, axis = 1))
@@ -301,13 +301,21 @@ class VLMOP2():
         self.nadir_point = [1, 1]
         self.lbound = torch.tensor([-1]*n_dim).float()
         self.ubound = torch.tensor([1]*n_dim).float()
-        self.bound = 2
+        self.bound = 5
        
     def evaluate(self, x): 
         n = x.shape[1]
+        a = x
+        if self.n_dim == 1:
+            a = x -4
+            self.bound = 10
+        else:
+            a = x 
+        n = x.shape[1]
+         
 
-        f1 = 1 - torch.exp(-torch.sum((x - 1 / np.sqrt(n))**2, axis = 1))
-        f2 = 1 - torch.exp(-torch.sum((x + 1 / np.sqrt(n))**2, axis = 1))
+        f1 = 1 - torch.exp(-torch.sum((a - 1 / np.sqrt(n))**2, axis = 1))
+        f2 = 1 - torch.exp(-torch.sum((a + 1 / np.sqrt(n))**2, axis = 1))
      
         objs = torch.stack([f1,f2]).T
         
